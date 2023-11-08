@@ -28,10 +28,15 @@ void insertHead(t_d_list* list, t_d_cell* cell, int level){
     }
 
     if (list->heads[level] == NULL) {                                       // Pas besoin de mettre le -1 car le premier niveau de la liste est le 0 comme dansz une liste
-        list->heads[level] = cell;
+        for (int i = 0; i < cell->nb_level; i++){
+            cell->nexts[i] = list->heads[i];
+            list->heads[i] = cell;
+        }
     }else{
-        cell->nexts[level] = list->heads[level];
-        list->heads[level] = cell;
+        for (int i = 0; i < cell->nb_level; i++){
+            cell->nexts[i] = list->heads[i];
+            list->heads[i] = cell;
+        }
     }
 }
 
