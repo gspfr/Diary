@@ -21,13 +21,13 @@ t_d_list createEmptyList (int max) {
     return list;
 }
 
-void insertHead(t_d_list* list, t_d_cell* cell, int level){
-    if ((level > list->max_lvl) || level > cell->nb_level-1){                                                                          // On doit aussi check si le level dépasse pas du nombre de level de la cell sauf que j'ai pas trouvé à part avec une boucle for qui compte le nombre de niveaux dans la cell
-        printf("Cannot insert at a greater level than the maximum level of the list\n");
+void insertHead(t_d_list* list, t_d_cell* cell){
+    if (cell->nb_level > list->max_lvl){
+        printf("Cannot insert a cell with more levels than the list\n");
         return;
     }
 
-    if (list->heads[level] == NULL) {                                       // Pas besoin de mettre le -1 car le premier niveau de la liste est le 0 comme dansz une liste
+    if (list->heads[0] == NULL) {                                       // Pas besoin de mettre le -1 car le premier niveau de la liste est le 0 comme dansz une liste
         for (int i = 0; i < cell->nb_level; i++){
             cell->nexts[i] = list->heads[i];
             list->heads[i] = cell;
@@ -61,6 +61,67 @@ void displayAllLevels(t_d_list list){
     }
 }
 
+/*
 void insertCell(t_d_list* list, t_d_cell* cell){
-    
+    if (cell->nb_level > list->max_lvl){
+        printf("Cannot insert a cell with more levels than the list\n");
+        return;
+    }
+
+    if ((list->heads[0] == NULL) || (cell->value < list->heads[0]->value)){
+        insertHead(list, cell);
+        return;
+    }
+    t_d_cell *temp, *prev;
+    for (int i =0; i < cell->nb_level; i++){
+        temp = list->heads[i];
+        while (temp != NULL){
+            prev = temp;
+            temp = temp->nexts[i];
+            if ((list->heads[i] == NULL) || (cell->value < list->heads[i]->value)) {
+                cell->nexts[i] = list->heads[i];
+                list->heads[i] = cell;
+            }else if ((prev->value < cell->value) && (cell->value < temp->value)){
+                prev->nexts[i] = cell;
+                cell->nexts[i] = temp;
+            }else if (temp->value < cell->value){
+                temp->nexts[i] = cell;
+            }
+        }
+    }
+}*/
+
+void insertCell(t_d_list* list, t_d_cell* cell){
+    if (cell->nb_level > list->max_lvl){
+        printf("Cannot insert a cell with more levels than the list\n");
+        return;
+    }
+
+    if ((list->heads[0] == NULL) || (cell->value < list->heads[0]->value)){
+        insertHead(list, cell);
+        return;
+    }
+
+    for (int i = 0; i < cell->nb_level; i++) {
+        t_d_cell *temp = list->heads[i];
+        t_d_cell *prev = NULL;
+
+        while (temp != NULL && temp->value < cell->value) {
+            prev = temp;
+            temp = temp->nexts[i];
+        }
+
+        if (prev == NULL) {
+            cell->nexts[i] = list->heads[i];
+            list->heads[i] = cell;
+        } else if (temp == NULL) {
+            prev->nexts[i] = cell;
+        } else {
+            prev->nexts[i] = cell;
+            cell->nexts[i] = temp;
+        }
+    }
 }
+
+
+

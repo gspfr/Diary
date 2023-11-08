@@ -6,9 +6,9 @@ int main() {
     t_d_cell *cell3;
     t_d_cell *cell4;
 
-    cell = createCell(18, 4);
-    cell2 = createCell(25, 1);
-    cell3 = createCell(31, 2);
+    cell = createCell(25, 4);
+    cell2 = createCell(18, 2);
+    cell3 = createCell(23, 3);
     cell4 = createCell(32, 5);
 
     t_d_cell* cell5;
@@ -21,40 +21,19 @@ int main() {
     cell7 = createCell(59, 1);
     cell8 = createCell(91, 3);
 
-    /*t_d_cell* cell9;
-    t_d_cell *cell10;
-
-    cell9 = createCell(9, 3);
-    cell10 = createCell(10, 3);
-
-    t_d_cell* cell11;
-    t_d_cell *cell12;
-    t_d_cell *cell13;
-
-    cell11 = createCell(11, 3);
-    cell12 = createCell(12, 3);
-    cell13 = createCell(13, 3);*/
-
-
 
     t_d_list list = createEmptyList(5);
-    insertHead(&list, cell, 0);
-    insertHead(&list, cell2, 0);
-    insertHead(&list, cell3, 0);
-    insertHead(&list, cell4, 0);
+    insertCell(&list, cell);
+    insertCell(&list, cell2);
+    insertCell(&list, cell3);
+    insertCell(&list, cell4);
 
-    insertHead(&list, cell5, 1);
-    insertHead(&list, cell6, 1);
-    insertHead(&list, cell7, 1);
-    insertHead(&list, cell8, 1);
+    insertCell(&list, cell5);
+    insertCell(&list, cell6);
+    insertCell(&list, cell7);
+    insertCell(&list, cell8);
 
-    /*insertHead(&list, cell9, 2);
-    insertHead(&list, cell10, 2);
-    insertHead(&list, cell11, 3);
-    insertHead(&list, cell12, 3);
-    insertHead(&list, cell13, 3);*/
 
-    //displayLevel(list, 0);
     displayAllLevels(list);
     return 0;
 }
