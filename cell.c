@@ -60,7 +60,7 @@ void displayLevel(t_d_list list, int level){
             for (int j = 0; j < x; j++) {
                 printf("-----------");
             }
-            printf("-->[ %d|@-]", temp->value);
+            printf("-->[ %2d|@-]", temp->value);
             temp0 = temp0->nexts[0];
             temp = temp->nexts[level];
         }
