@@ -45,51 +45,43 @@ void displayLevel(t_d_list list, int level){
         printf("Cannot display at a greater level than the maximum level of the list\n");
         return;
     }
-    t_d_cell* temp;
+    t_d_cell *temp, *temp0;
     temp = list.heads[level];
-    while (temp != NULL){
-        printf("[ %d|@-]--> ", temp->value);
-        temp = temp->nexts[level];
+    temp0 = list.heads[0];
+    int x;
+
+    if(temp != NULL) {                          // If the list is not empty
+        while (temp != NULL) {
+            x = 0;
+            while ((temp0 != NULL) && (temp0->value != temp->value)) {              // The difference between the indexes of the two element at the level given and the level 0
+                temp0 = temp0->nexts[0];
+                x++;
+            }
+            for (int j = 0; j < x; j++) {
+                printf("-----------");
+            }
+            printf("-->[ %d|@-]", temp->value);
+            temp0 = temp0->nexts[0];
+            temp = temp->nexts[level];
+        }
     }
-    printf("NULL\n");
+    x = 0;
+    while ((temp0!= NULL)){                     // If the list is empty
+        temp0 = temp0->nexts[0];
+        x++;
+    }
+    for (int j = 0; j < x; j++) {
+        printf("-----------");
+    }
+    printf("-->NULL\n");
 }
 
 void displayAllLevels(t_d_list list){
     for (int i = 0; i < list.max_lvl; i++){
-        printf("[list head_%d @-]-->", i);
+        printf("[list head_%d @-]", i);
         displayLevel(list, i);
     }
 }
-
-/*
-void insertCell(t_d_list* list, t_d_cell* cell){
-    if (cell->nb_level > list->max_lvl){
-        printf("Cannot insert a cell with more levels than the list\n");
-        return;
-    }
-
-    if ((list->heads[0] == NULL) || (cell->value < list->heads[0]->value)){
-        insertHead(list, cell);
-        return;
-    }
-    t_d_cell *temp, *prev;
-    for (int i =0; i < cell->nb_level; i++){
-        temp = list->heads[i];
-        while (temp != NULL){
-            prev = temp;
-            temp = temp->nexts[i];
-            if ((list->heads[i] == NULL) || (cell->value < list->heads[i]->value)) {
-                cell->nexts[i] = list->heads[i];
-                list->heads[i] = cell;
-            }else if ((prev->value < cell->value) && (cell->value < temp->value)){
-                prev->nexts[i] = cell;
-                cell->nexts[i] = temp;
-            }else if (temp->value < cell->value){
-                temp->nexts[i] = cell;
-            }
-        }
-    }
-}*/
 
 void insertCell(t_d_list* list, t_d_cell* cell){
     if (cell->nb_level > list->max_lvl){
