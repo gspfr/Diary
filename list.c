@@ -4,6 +4,7 @@ t_d_list createList (int n){
     if (n > 0){
         int value = (int)pow(2, n) - 1;
         int *array = (int*)malloc(value * sizeof(int ));
+        //printf("%d\n", value);
 
         for (int i = 0; i < value; i++){            // initialisation of the value at 0
             array[i] = 0;
@@ -22,6 +23,7 @@ t_d_list createList (int n){
                 max = array[i];
             }
         }
+        //printf("%d\n", max);
 
         t_d_list list = createEmptyList(max+1);                 // Creation of the list
 
@@ -44,3 +46,16 @@ t_d_list createList (int n){
         return list;
     }
 }
+
+int classicSearch(t_d_list list, int value){
+    t_d_cell *temp = list.heads[0];
+    while (temp != NULL){
+        if (temp->value == value){
+            return 1;
+        }
+        temp = temp->nexts[0];
+    }
+    return 0;
+}
+
+
