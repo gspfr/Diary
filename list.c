@@ -58,4 +58,42 @@ int classicSearch(t_d_list list, int value){
     return 0;
 }
 
+int optimisedSearch(t_d_list list, int level, int value){
+    if (value < 1){
+        printf("Give a value at least equal to 1\n");
+        return 0;
+    }
+    t_d_cell *temp = list.heads[level], *prev = NULL;
 
+    while (temp != NULL){
+        if (temp->value == value) {                 // si la valeur est trouvée
+            return 1;
+        } else if (temp->value > value){                        // Si la valeur du temp est supérieur à la value recherché on refait la même fonction au niveau inférieur
+            return optimisedSearch(list, level-1, value);
+        }
+        prev = temp;
+        temp = temp->nexts[level];
+    }
+    return searchfromCell(prev, level-1, value);
+}
+
+int searchfromCell(t_d_cell *cell, int level, int value){
+    t_d_cell *temp = cell, *prev = NULL;
+    while (temp != NULL){
+        if (temp->value == value){
+            return 1;
+        } else if (temp->value > value){
+            return searchfromCell(prev, level-1, value);
+        }
+        prev = temp;
+        temp = temp->nexts[level];
+    }
+    if (level != 0){
+        return searchfromCell(prev, level-1, value);
+    }
+    return 0;
+}
+
+
+// SI c inférieur appel récursif de la fonction à partir de level-1
+// SI c supérieur faire une boucle en changeant le temp pour etre egal à la dernière cell
