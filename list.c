@@ -8,12 +8,11 @@ t_d_list createList (int n){
 
         for (int i = 0; i < value; i++){            // initialisation of the value at 0
             array[i] = 0;
+        }
 
-            if (i % 2 == 1){
-                array[i]++;
-            }
-            if (i % 4 == 3){
-                array[i]++;
+        for (int i = 0; i < n - 1; i++){
+            for (int j = (int)pow(2, i+1) - 1; j < value - 1; j += (int)pow(2, i + 1)){
+                array[j]++;
             }
         }
 
@@ -25,7 +24,7 @@ t_d_list createList (int n){
         }
         //printf("%d\n", max);
 
-        t_d_list list = createEmptyList(max+1);                 // Creation of the list
+        t_d_list list = createEmptyList(n);                 // Creation of the list
 
         for (int i = 0; i < value; i++){                        // Creation of the cells and their insertion in the list
             t_d_cell *cell = createCell(i+1, array[i]+1);         // creation of the cell with its value = i+1 and its number of level equal to the number found in the array
