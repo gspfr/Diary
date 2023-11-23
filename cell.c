@@ -1,6 +1,6 @@
 #include "cell.h"
 
-t_d_cell* createCell(int val, int nb_level){
+t_d_cell *createCell(int val, int nb_level){
     t_d_cell* cell = (t_d_cell*)malloc(sizeof(t_d_cell));
     cell->value = val;
     cell->nb_level = nb_level;
@@ -22,14 +22,13 @@ t_d_list createEmptyList (int max) {
 }
 
 void insertHead(t_d_list* list, t_d_cell* cell){
-    if (cell->nb_level > list->max_lvl){
-        printf("Cannot insert a cell with more levels than the list\n");
-        return;
+    for (int i = 0; i < cell->nb_level; i++) {
+        cell->nexts[i] = list->heads[i];
+        list->heads[i] = cell;
     }
-
-    if (list->heads[0] == NULL) {                                       // Pas besoin de mettre le -1 car le premier niveau de la liste est le 0 comme dansz une liste
+    /*if (list->heads[0] == NULL) {                                       // Pas besoin de mettre le -1 car le premier niveau de la liste est le 0 comme dansz une liste
         for (int i = 0; i < cell->nb_level; i++){
-            cell->nexts[i] = list->heads[i];
+            //cell->nexts[i] = list->heads[i];
             list->heads[i] = cell;
         }
     }else{
@@ -37,7 +36,7 @@ void insertHead(t_d_list* list, t_d_cell* cell){
             cell->nexts[i] = list->heads[i];
             list->heads[i] = cell;
         }
-    }
+    }*/
 }
 
 void displayLevel(t_d_list list, int level){
@@ -83,37 +82,30 @@ void displayAllLevels(t_d_list list){
     }
 }
 
-void insertCell(t_d_list* list, t_d_cell* cell){
-    if (cell->nb_level > list->max_lvl){
-        printf("Cannot insert a cell with more levels than the list\n");
-        return;
-    }
+void insertCell(t_d_list* list, int val, int nblvl){
+    t_d_cell *cell = createCell(val, nblvl);
 
     if ((list->heads[0] == NULL) || (cell->value < list->heads[0]->value)){
         insertHead(list, cell);
         return;
-    }
+    }else {
+        for (int i = 0; i < cell->nb_level; i++) {
+            t_d_cell *temp = list->heads[i];
+            t_d_cell *prev = NULL;
 
-    for (int i = 0; i < cell->nb_level; i++) {
-        t_d_cell *temp = list->heads[i];
-        t_d_cell *prev = NULL;
+            while (temp != NULL && temp->value < cell->value) {
+                prev = temp;
+                temp = temp->nexts[i];
+            }
 
-        while (temp != NULL && temp->value < cell->value) {
-            prev = temp;
-            temp = temp->nexts[i];
-        }
-
-        if (prev == NULL) {
-            cell->nexts[i] = list->heads[i];
-            list->heads[i] = cell;
-        } else if (temp == NULL) {
-            prev->nexts[i] = cell;
-        } else {
-            prev->nexts[i] = cell;
-            cell->nexts[i] = temp;
+            if (prev == NULL) {
+                cell->nexts[i] = list->heads[i];
+                list->heads[i] = cell;
+            } else {
+                prev->nexts[i] = cell;
+                cell->nexts[i] = temp;
+            }
         }
     }
 }
-
-
 

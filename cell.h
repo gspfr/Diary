@@ -23,7 +23,7 @@ t_d_list createEmptyList(int);
 void insertHead(t_d_list*, t_d_cell*);
 void displayLevel(t_d_list, int);
 void displayAllLevels(t_d_list list);
-void insertCell(t_d_list* list, t_d_cell* cell);
+void insertCell(t_d_list* list, int, int);
 
 
 
