@@ -16,7 +16,7 @@ typedef struct {
 typedef struct {
     int hour;
     int minute;
-}time;
+}starting_time;
 
 typedef struct {
     int hour;
@@ -29,7 +29,7 @@ typedef struct {
 
 typedef struct {
     date date;
-    time time;
+    starting_time time;
     length length;
     purpose purpose;
 }appointment;
