@@ -24,7 +24,6 @@ t_d_list createList (int n){
             insertCell(&list, i + 1, array[i] + 1); // creation of the cell with its value = i+1 and its number of level equal to the number found in the array
         }
         stopTimer();
-        displayTime();
         return list;
 
     }else if (n == 0){
@@ -86,5 +85,55 @@ int searchfromCell(t_d_cell *cell, int level, int value){
     return 0;
 }
 
-// SI c inférieur appel récursif de la fonction à partir de level-1
-// SI c supérieur faire une boucle en changeant le temp pour etre egal à la dernière cell
+void savetimes(){
+    FILE *log_file = fopen("log.txt", "w");
+    char format[] = "%d\t %s\t%s\n";
+    int level;
+    char *time_lvl0;
+    char *time_all_levels;
+    level = 7;
+    int array[10000];
+    srand(time(NULL));
+    for (int i =0; i < 10000; i++){
+        int value = ((rand()<<15)|rand()) % (int)pow(2, 18)-1;
+        array[i] = value;
+        printf("%d\n", value);
+    }
+
+
+
+    //Eveything in a loop
+    while (level < 28){
+
+        //search at level 0
+        t_d_list list = createList(level);
+        startTimer();
+        for (int i = 0; i < 10000; i++){
+            classicSearch(list, array[i]);
+        }
+        stopTimer();
+
+        //displayTime();
+        time_lvl0 = getTimeAsString();
+
+        //search at last level
+
+        startTimer();
+        for (int i =0; i < 10000; i++){
+            optimisedSearch(list, level-1,array[i]);
+        }
+        stopTimer();
+
+        //displayTime();
+        time_all_levels = getTimeAsString();
+
+        fprintf(log_file, format, level, time_lvl0, time_all_levels);
+
+
+        level++;
+    }
+    //Close the document
+    fclose(log_file);
+
+    return;
+}

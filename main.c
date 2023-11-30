@@ -2,25 +2,42 @@
 #include "timer.h"
 
 int main() {
-    startTimer();
-    t_d_list list = createList(27);
-    stopTimer();
-    displayTime();
+    //savetimes();
+    FILE *log_file = fopen("log.txt","w");
+    char format[] = "%d\t%s\t%s\n" ;
+    int level;
+    char *time_lvl0;
+    char *time_all_levels;
 
-    if (optimisedSearch(list, list.max_lvl-1, 25001)){
-        printf("Value FOUND !\n");
-    }else{
-        printf("Value not found\n");
-    }
+    level = 8;
+    while(level<=25){
+        printf("%d", level);
+        t_d_list list = createList(level);
+        startTimer();
+        if (classicSearch(list, 100000)){
+            printf("Value found !\n");
+        }else {
+            printf("Value not found\n");
+        }
+        stopTimer();
+        displayTime();
 
-    startTimer();
-    if (classicSearch(list, 25001)){
-        printf("Value found !\n");
-    }else {
-        printf("Value not found\n");
+        time_lvl0 = getTimeAsString(); // fonction du module timer
+
+        startTimer();
+        if (optimisedSearch(list, list.max_lvl-1, 100000)){
+            printf("Value FOUND !\n");
+        }else{
+            printf("Value not found\n");
+        }
+        stopTimer();
+        displayTime();
+
+        time_all_levels = getTimeAsString();
+        fprintf(log_file,format,level,time_lvl0, time_all_levels);
+        level++;
     }
-    stopTimer();
-    displayTime();
+    fclose(log_file);
 
     return 0;
 }
