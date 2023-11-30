@@ -38,6 +38,5 @@ int main() {
         level++;
     }
     fclose(log_file);
-
     return 0;
 }
