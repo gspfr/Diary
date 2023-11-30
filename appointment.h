@@ -34,6 +34,12 @@ typedef struct {
     purpose purpose;
 }appointment;
 
+typedef struct {
+    contact person;
+    appointment* all_appointment;
+}calendar;
+
 char *scanString();
+char *entries_in_calendar(contact);
 
 #endif //DIARY_MAIN__1__APPOINTMENT_H

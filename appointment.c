@@ -1,6 +1,8 @@
 #include "appointment.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 char* scanString() {
     int ArraySize = 10; // Initial size of the array
@@ -21,4 +23,13 @@ char* scanString() {
         }
     }
     return string;
+}
+
+char *entries_in_calendar(contact person){
+    char* contact_entry = (char*)malloc(50);
+    snprintf(contact_entry, 100, "%s_%s", person.firstname, person.surname);
+    for (int i = 0; contact_entry[i]; ++i) {
+        contact_entry[i] = tolower(contact_entry[i]); // Converts to lowercase
+    }
+    return contact_entry;
 }
