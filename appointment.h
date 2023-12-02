@@ -39,12 +39,20 @@ typedef struct {
 }appointment;
 
 
+
 typedef struct t{
     contact **heads;
     int max_lvl;
 }contact_list;
 
+typedef struct {
+    contact person;
+    appointment* all_appointment;
+}calendar;
+
+
 char *scanString();
+char *entries_in_calendar(contact);
 
 contact_list createContactList();
 void insertContact(contact_list *, contact *);

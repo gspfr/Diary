@@ -1,5 +1,8 @@
 #include "appointment.h"
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 
 char* scanString() {
@@ -24,17 +27,16 @@ char* scanString() {
 }
 
 
-/*contact_list createContactList(){
+
+contact_list createContactList(){
     printf("OK\n");
     FILE *file = fopen("C:\\Users\\Gabriel\\CLionProjects\\Diary\\noms2008nat_txt.txt", "r");
     contact_list list = createEmptyContactList(4);
-    fclose(file);
-
-    return list;*/
 
 
-    /*printf("OK\n");
-    if (file == NULL){
+
+    printf("OK\n");
+    /*if (file == NULL){
         printf("ERROR opening the file.\n");
         return list;
     }else{
@@ -83,7 +85,7 @@ char* scanString() {
 
 
     return list;*/
-    /*char line[50];
+    char line[50];
     int i =0;
 
     while (fgets(line, sizeof(line), file) != NULL){
@@ -108,78 +110,8 @@ char* scanString() {
     contact *temp = list.heads[0];
     printf("%s\n", list.heads[0]->firstname);
     fclose(file);
-    return list;*/
-//}
-contact_list createContactList() {
-    FILE *file = fopen("C:\\Users\\Gabriel\\CLionProjects\\Diary\\noms2008nat_txt.txt", "r");
-    contact_list list = createEmptyContactList(4);
-
-    if (file == NULL) {
-        printf("ERROR opening the file.\n");
-        return list;
-    } else {
-        printf("SUCCESS opening the file.\n");
-    }
-
-    // Compter le nombre de lignes dans le fichier
-    int nbLines = 0;
-    char line[50];
-
-    while (fgets(line, sizeof(line), file) != NULL) {
-        nbLines++;
-    }
-
-    // Réinitialiser la position du curseur dans le fichier
-    rewind(file);
-
-    // Allouer dynamiquement le tableau lines avec la bonne taille
-    char **lines = (char **)malloc(nbLines * sizeof(char *));
-    for (int i = 0; i < nbLines; i++) {
-        lines[i] = (char *)malloc(50 * sizeof(char));
-    }
-
-    int i = 0;
-
-    // Lire le fichier et stocker les lignes dans le tableau lines
-    while (fgets(lines[i], sizeof(lines[i]), file) != NULL) {
-        lines[i][strcspn(lines[i], "\n")] = '\0';  // Supprimer le saut de ligne
-        i++;
-    }
-
-    printf("Read %d lines from the file.\n", nbLines);
-
-    fclose(file);
-
-    // Insérer les noms dans l'ordre décroissant
-    for (int j = i - 1; j >= 0; j--) {
-        contact *cont = (contact *)malloc(sizeof(contact));
-        cont->nexts = (contact **)malloc(list.max_lvl * sizeof(contact*));
-        for (int k = 0; k < list.max_lvl; k++) {
-            cont->nexts[k] = NULL;
-        }
-
-        cont->firstname = (char *)malloc(strlen(lines[j]) + 1);
-        strcpy(cont->firstname, lines[j]);
-        cont->surname = NULL;
-
-        printf("%d %s\n", i - j, cont->firstname);
-        insertContact(&list, cont);
-    }
-
-    // Afficher la liste
-    contact *temp = list.heads[0];
-    while (temp != NULL) {
-        printf("%s\n", temp->firstname);
-        temp = temp->nexts[0];
-    }
-
     return list;
 }
-
-
-
-
-
 
 void insertContact(contact_list *list, contact *newContact){
     if (list == NULL || newContact == NULL) {
@@ -222,3 +154,13 @@ contact_list createEmptyContactList (int max) {
     }
     return list;
 }
+
+char *entries_in_calendar(contact person){
+    char* contact_entry = (char*)malloc(50);
+    snprintf(contact_entry, 100, "%s_%s", person.firstname, person.surname);
+    for (int i = 0; contact_entry[i]; ++i) {
+        contact_entry[i] = tolower(contact_entry[i]); // Converts to lowercase
+    }
+    return contact_entry;
+}
+
