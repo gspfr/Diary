@@ -1,9 +1,18 @@
 #include "list.h"
 #include "timer.h"
+#include "appointment.h"
 
 int main() {
     //savetimes();
-    FILE *log_file = fopen("log.txt","w");
+    /*printf("Enter your name!");
+    char* name = scanString();
+    printf("%s",name);*/
+    printf("%d\n", strcmp("b", "a"));
+    contact_list list = createContactList();
+    printf("%d", strcmp(list.heads[0]->firstname, list.heads[0]->nexts[0]->firstname));
+
+
+    /*FILE *log_file = fopen("log.txt","w");
     char format[] = "%d\t%s\t%s\n" ;
     int level;
     char *time_lvl0;
@@ -37,6 +46,6 @@ int main() {
         fprintf(log_file,format,level,time_lvl0, time_all_levels);
         level++;
     }
-    fclose(log_file);
+    fclose(log_file);*/
     return 0;
 }
