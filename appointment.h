@@ -4,6 +4,7 @@
 #include "list.h"
 #include <string.h>
 
+
 typedef struct Contact{
     char* surname;
     char* firstname;
@@ -48,7 +49,6 @@ char *scanString();
 contact_list createContactList();
 void insertContact(contact_list *, contact *);
 contact_list createEmptyContactList (int max);
-
 
 
 #endif //DIARY_MAIN__1__APPOINTMENT_H
