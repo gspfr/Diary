@@ -11,6 +11,7 @@ typedef struct Contact{
     char* surname;
     char* firstname;
     struct Contact** nexts;
+    int nb_level;
 }contact;
 
 typedef struct {
@@ -56,8 +57,9 @@ char *entries_in_calendar(contact);
 
 contact_list createContactList();
 void insertContact(contact_list *, contact *);
-contact_list createEmptyContactList (int max);
-char* toLowerString(char *str);
+contact_list createEmptyContactList (int);
+char* toLowerString(char *);
+contact *createContact(char *, char *);
 
 
 #endif //DIARY_MAIN__1__APPOINTMENT_H

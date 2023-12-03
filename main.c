@@ -6,6 +6,7 @@ int main() {
     /*printf("Enter your name!");
     char* name = scanString();
     printf("%s",name);*/
+
     menu();
 
     //printf("%d\n", strcmp("b", "a"));
