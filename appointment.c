@@ -1,8 +1,4 @@
 #include "appointment.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 
 
 char* scanString() {
@@ -26,90 +22,62 @@ char* scanString() {
     return string;
 }
 
-
-
 contact_list createContactList(){
-    printf("OK\n");
-    FILE *file = fopen("C:\\Users\\Gabriel\\CLionProjects\\Diary\\noms2008nat_txt.txt", "r");
+    FILE *file_surname = fopen("noms2008nat_txt.txt", "r");
+    FILE *file_firstname = fopen("nat2021.csv", "r");
     contact_list list = createEmptyContactList(4);
 
 
-
-    printf("OK\n");
-    /*if (file == NULL){
-        printf("ERROR opening the file.\n");
-        return list;
-    }else{
-        printf("SUCCESS opening the file.\n");
-    }
-    printf("OK\n");
-
-
-    //char lines[218981][50];  // Assurez-vous que la taille du tableau est suffisamment grande
-    char **lines = NULL;
-    lines = (char**)malloc(218981*sizeof(char*));
-    for (int f = 0; f<218981; f++){
-        lines[f] = (char*)malloc(50*sizeof(char));
-    }
-
-    int i = 0;
-
-    while (fgets(lines[i], sizeof(lines[i]), file) != NULL) {
-        lines[i][strcspn(lines[i], "\n")] = '\0';  // Supprimer le saut de ligne
-        i++;
-    }
-
-    fclose(file);
-
-    // Insérer les noms dans l'ordre décroissant
-    for (int j = i - 1; j >= 0; j--) {
-        contact *cont = (contact *)malloc(sizeof(contact));
-        cont->nexts = (contact **)malloc(list.max_lvl * sizeof(contact*));
-        for (int k = 0; k < list.max_lvl; k++) {
-            cont->nexts[k] = NULL;
-        }
-
-        cont->firstname = (char *)malloc(strlen(lines[j]) + 1);
-        strcpy(cont->firstname, lines[j]);
-        cont->surname = NULL;
-        //printf("%d %s\n", i - j, cont->firstname);
-        insertContact(&list, cont);
-    }
-
-    // Afficher la liste
-    contact *temp = list.heads[0];
-    while (temp != NULL) {
-        //printf("%s\n", temp->firstname);
-        temp = temp->nexts[0];
-    }
-
-
-    return list;*/
-    char line[50];
+    char firstname[50];
+    char surname[50];
     int i =0;
 
-    while (fgets(line, sizeof(line), file) != NULL){
+    while (fgets(firstname, sizeof(firstname), file_firstname) != NULL && i < 21898){
+        firstname[strcspn(firstname, "\n")] = '\0';
+        //printf("%s ", firstname);
 
-        line[strcspn(line, "\n")] = '\0';
+        for (int k = 0; k < 10; k++){
+            if (fgets(surname, sizeof(surname), file_surname) == NULL) {
+                // Gérer l'échec de lecture du fichier des noms
+                printf("Erreur de lecture du fichier des noms.\n");
+                fclose(file_firstname);
+                fclose(file_surname);
+                return list;
+            }
+            surname[strcspn(surname, "\n")] = '\0';
+        }
+        //printf("%s\n", surname);
+
         contact *cont = (contact*)malloc(sizeof(contact));
         cont->nexts = (contact**)malloc(list.max_lvl*sizeof(contact*));
-        for (int i = 0; i<list.max_lvl; i++){
-            cont->nexts[i] = NULL;
-        }
-        cont->firstname = (char*)malloc(strlen(line)+1);        //one char is one byte so no need to *sizof(char)
-        strcpy(cont->firstname, line);
-        cont->surname = NULL;
 
-        printf("%d %s\n",i, cont->firstname);
-        i++;
+        for (int j = 0; j<list.max_lvl; j++){
+            cont->nexts[j] = NULL;
+        }
+
+        cont->firstname = (char*)malloc(strlen(firstname)+1);        //one char is one byte so no need to *sizof(char)
+        strcpy(cont->firstname, toLowerString(firstname));
+
+        cont->surname = (char*)malloc(strlen(surname)+1);
+        strcpy(cont->surname, toLowerString(surname));
+
         insertContact(&list, cont);
-        //printf("%d\n", i);
+
+        i++;
     }
 
-
+    i = 0;
     contact *temp = list.heads[0];
+
+    /*while (temp != NULL){
+        printf("%d %s_%s\n",i, temp->surname, temp->firstname);
+        temp = temp->nexts[0];
+        i++;
+    }*/
+
     printf("%s\n", list.heads[0]->firstname);
-    fclose(file);
+    fclose(file_firstname);
+    fclose(file_surname);
     return list;
 }
 
@@ -126,7 +94,7 @@ void insertContact(contact_list *list, contact *newContact){
         contact *current = list->heads[0];
         contact *previous = NULL;
 
-        while (current != NULL && (strcmp(newContact->firstname, current->firstname) > 0)) {     //Comparison of the strings firstname of the contact we want to insert and the current one
+        while (current != NULL && (strcmp(newContact->surname, current->surname) > 0)) {     //Comparison of the strings firstname of the contact we want to insert and the current one
             /*We go to the next if the current is not NULL and if the result of strcmp is -1
              * meaning that the string firstname of the contact we want to insert is before in the alphabetic order*/
             previous = current;
@@ -141,8 +109,6 @@ void insertContact(contact_list *list, contact *newContact){
             newContact->nexts[0] = current;
         }
     }
-
-
 }
 
 contact_list createEmptyContactList (int max) {
@@ -164,3 +130,11 @@ char *entries_in_calendar(contact person){
     return contact_entry;
 }
 
+char* toLowerString(char *str){
+    int length = strlen(str);
+
+    for (int i = 0; i < length; i++) {
+        str[i] = tolower(str[i]);
+    }
+    return str;
+}

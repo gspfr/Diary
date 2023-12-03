@@ -3,7 +3,9 @@
 
 #include "list.h"
 #include <string.h>
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 typedef struct Contact{
     char* surname;
@@ -38,9 +40,7 @@ typedef struct {
     purpose purpose;
 }appointment;
 
-
-
-typedef struct t{
+typedef struct {
     contact **heads;
     int max_lvl;
 }contact_list;
@@ -57,6 +57,7 @@ char *entries_in_calendar(contact);
 contact_list createContactList();
 void insertContact(contact_list *, contact *);
 contact_list createEmptyContactList (int max);
+char* toLowerString(char *str);
 
 
 #endif //DIARY_MAIN__1__APPOINTMENT_H

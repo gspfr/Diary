@@ -7,10 +7,10 @@ int main() {
     /*printf("Enter your name!");
     char* name = scanString();
     printf("%s",name);*/
+
     printf("%d\n", strcmp("b", "a"));
     contact_list list = createContactList();
     printf("%d", strcmp(list.heads[0]->firstname, list.heads[0]->nexts[0]->firstname));
-
 
     /*FILE *log_file = fopen("log.txt","w");
     char format[] = "%d\t%s\t%s\n" ;
