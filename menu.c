@@ -1,11 +1,10 @@
-//
-// Created by franc on 03/12/2023.
-//
-#include "stdlib.h"
-#include "stdio.h"
 #include "menu.h"
+
 void menu(){
     int choice = 0;
+
+    contact_list list = createContactList();
+
     while(choice!=9){
         printf("What do you want to do ?\n");
         printf("1.Search a contact\n2.Display appointment with a contact\n3.Create a contact\n4.Create an appointment\n5.Delete an appointment\n");
