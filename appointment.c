@@ -61,14 +61,14 @@ contact_list createContactList(){
         i++;
     }*/
 
-    printf("%s\n", list.heads[0]->firstname);
+    //printf("%s\n", list.heads[0]->firstname);
 
     for (int i = 0; i<list.max_lvl;i++){
         contact *temp = list.heads[i];
         printf("level %d\n\n\n\n", i);
         int j = 0;
         while (temp != NULL){
-            printf("%d %s_%s %d niveaux\n",j, temp->surname, temp->firstname, temp->nb_level);
+            //printf("%d %s_%s %d niveaux\n",j, temp->surname, temp->firstname, temp->nb_level);
             temp = temp->nexts[i];
             j++;
         }
@@ -235,4 +235,10 @@ contact *createContact(char *firstname, char *surname){
     cont->surname = (char*)malloc(strlen(surname)+1);
     strcpy(cont->surname, toLowerString(surname));
     return cont;
+}
+
+void display_appointment(appointment appointment1){
+    printf("Date: %d/%d/%d\n", appointment1.date.day, appointment1.date.month, appointment1.date.year);
+    printf("At : %dh%d during %dh%d\n", appointment1.time.hour,appointment1.time.minute, appointment1.length.hour,appointment1.length.minute);
+    printf("Purpose: %s\n", appointment1.purpose.reason);
 }

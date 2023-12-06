@@ -61,5 +61,6 @@ contact_list createEmptyContactList (int);
 char* toLowerString(char *);
 contact *createContact(char *, char *);
 
+void display_appointment(appointment);
 
 #endif //DIARY_MAIN__1__APPOINTMENT_H
