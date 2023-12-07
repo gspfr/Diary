@@ -60,7 +60,9 @@ contact_list createContactList(){
         temp = temp->nexts[0];
         i++;
     }*/
+
     //printf("%s\n", list.heads[0]->firstname);
+
     /*for (int i = 0; i<list.max_lvl;i++){
         contact *temp = list.heads[i];
         printf("level %d\n\n\n\n", i);
@@ -86,7 +88,7 @@ void insertContact(contact_list *list, contact *newContact){
     }
 
     if (list->heads[0] == NULL) {       // The list is empty
-        //list->heads[0] = newContact;
+        list->heads[0] = newContact;
         newContact->nb_level = 4;
         newContact->nexts = (contact**)realloc(newContact->nexts, newContact->nb_level*sizeof(contact*));
         for (int j = 0; j<4; j++){
@@ -239,5 +241,17 @@ contact *createContact(char *firstname, char *surname){
 void display_appointment(appointment appointment1){
     printf("Date: %d/%d/%d\n", appointment1.date.day, appointment1.date.month, appointment1.date.year);
     printf("At : %dh%d during %dh%d\n", appointment1.time.hour,appointment1.time.minute, appointment1.length.hour,appointment1.length.minute);
-    printf("Purpose: %s\n", appointment1.purpose.reason);
+    printf("Purpose: %s\n", appointment1.purpose);
 }
+
+int search_contact0(contact_list contactList, char* name){
+    contact *temp = contactList.heads[0];
+    while (temp != NULL){
+        if (strcmp(temp->surname, name) == 0){
+            return 1;
+        }
+        temp = temp->nexts[0];
+    }
+    return 0;
+}
+
