@@ -61,9 +61,8 @@ contact_list createContactList(){
         i++;
     }*/
 
-    printf("%s\n", list.heads[0]->firstname);
 
-    for (int i = 0; i<list.max_lvl;i++){
+    /*for (int i = 0; i<list.max_lvl;i++){
         contact *temp = list.heads[i];
         printf("level %d\n\n\n\n", i);
         int j = 0;
@@ -73,7 +72,7 @@ contact_list createContactList(){
             j++;
         }
         printf("\n\n\n\n\n\n");
-    }
+    }*/
 
 
     fclose(file_firstname);
@@ -88,11 +87,12 @@ void insertContact(contact_list *list, contact *newContact){
     }
 
     if (list->heads[0] == NULL) {       // The list is empty
-        list->heads[0] = newContact;
+        //list->heads[0] = newContact;
         newContact->nb_level = 4;
         newContact->nexts = (contact**)realloc(newContact->nexts, newContact->nb_level*sizeof(contact*));
         for (int j = 0; j<4; j++){
             newContact->nexts[j] = NULL;
+            list->heads[j] = newContact;
         }
         return;
     }else {

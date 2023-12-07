@@ -2,12 +2,60 @@
 #include "menu.h"
 
 int main() {
+
+    createContactList();
+    //menu();
+
+
+    /*FILE *log_file = fopen("log.txt","w");
+    char format[] = "%d\t%s\t%s\n" ;
+    int level;
+    char *time_lvl0;
+    char *time_all_levels;
+
+    level = 8;
+    while(level<=26){
+        printf("%d", level);
+        t_d_list list = createList(level);
+        startTimer();
+        if (classicSearch(list, 10000000)){
+            printf("Value found !\n");
+        }else {
+            printf("Value not found\n");
+        }
+        stopTimer();
+        displayTime();
+
+        time_lvl0 = getTimeAsString(); // fonction du module timer
+
+        startTimer();
+        if (optimisedSearch(list, list.max_lvl-1, 10000000)){
+            printf("Value FOUND !\n");
+        }else{
+            printf("Value not found\n");
+        }
+        stopTimer();
+        displayTime();
+
+        time_all_levels = getTimeAsString();
+        fprintf(log_file,format,level,time_lvl0, time_all_levels);
+        level++;
+    }
+    fclose(log_file);*/
+
+
+
+
+
+
+
+
     //savetimes();
     /*printf("Enter your name!");
     char* name = scanString();
     printf("%s",name);*/
 
-    menu();
+    //menu();
 
     //printf("%d\n", strcmp("b", "a"));
     //contact_list list = createContactList();

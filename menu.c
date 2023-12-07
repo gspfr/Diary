@@ -4,6 +4,7 @@ void menu(){
     int choice = 0;
 
     contact_list list = createContactList();
+    printf("%s\n", list.heads[3]->surname);
 
     while(choice!=9){
         printf("What do you want to do ?\n");
@@ -21,6 +22,12 @@ void menu(){
             }
             case 3:{
                 printf("ouais3\n");
+                printf("Enter the first name:\n");
+                char * first_name = scanString();
+                printf("Enter the last name:\n");
+                char * last_name = scanString();
+                contact * cont = createContact(first_name, last_name);
+                insertContact(&list, cont);
                 break;
             }
             case 4:{

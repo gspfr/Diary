@@ -5,7 +5,6 @@ t_d_list createList (int n){
     if (n > 0){
         int value = (int)pow(2, n) - 1;
         int *array = (int*)malloc(value * sizeof(int));
-        printf("%d\n", value);
 
         for (int i = 0; i < value; i++){            // initialisation of the value at 0
             array[i] = 0;
@@ -19,11 +18,9 @@ t_d_list createList (int n){
 
         t_d_list list = createEmptyList(n);                 // Creation of the list
 
-        startTimer();
         for (int i = value -1; i >= 0; i--){        // Creation of the cells and their insertion in the list
             insertCell(&list, i + 1, array[i] + 1); // creation of the cell with its value = i+1 and its number of level equal to the number found in the array
         }
-        stopTimer();
         return list;
 
     }else if (n == 0){
@@ -99,8 +96,6 @@ void savetimes(){
         array[i] = value;
         printf("%d\n", value);
     }
-
-
 
     //Eveything in a loop
     while (level < 28){
