@@ -60,10 +60,7 @@ contact_list createContactList(){
         temp = temp->nexts[0];
         i++;
     }*/
-
-
     //printf("%s\n", list.heads[0]->firstname);
-
     /*for (int i = 0; i<list.max_lvl;i++){
         contact *temp = list.heads[i];
         printf("level %d\n\n\n\n", i);
