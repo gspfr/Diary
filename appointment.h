@@ -31,14 +31,10 @@ typedef struct {
 }length;
 
 typedef struct {
-    char* reason;
-}purpose;
-
-typedef struct {
     date date;
     starting_time time;
     length length;
-    purpose purpose;
+    char* purpose;
 }appointment;
 
 typedef struct {
@@ -62,5 +58,7 @@ char* toLowerString(char *);
 contact *createContact(char *, char *);
 
 void display_appointment(appointment);
+
+int search_contact0(contact_list, char* );
 
 #endif //DIARY_MAIN__1__APPOINTMENT_H
