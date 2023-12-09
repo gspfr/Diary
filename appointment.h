@@ -7,13 +7,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-typedef struct Contact{
-    char* surname;
-    char* firstname;
-    struct Contact** nexts;
-    int nb_level;
-}contact;
-
 typedef struct {
     int day;
     int month;
@@ -30,12 +23,21 @@ typedef struct {
     int minute;
 }length;
 
-typedef struct {
+ struct Appointment{
     date date;
     starting_time time;
     length length;
     char* purpose;
-}appointment;
+    struct appointment ** next;
+}typedef appointment;
+
+typedef struct Contact{
+    char* surname;
+    char* firstname;
+    struct Contact** nexts;
+    int nb_level;
+    appointment ** appointments;
+}contact;
 
 typedef struct {
     contact **heads;
