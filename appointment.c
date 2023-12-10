@@ -51,29 +51,7 @@ contact_list createContactList(){
 
         i++;
     }
-
-    i = 0;
-    contact *temp = list.heads[0];
-
-    /*while (temp != NULL){
-        printf("%d %s_%s %d niveaux\n",i, temp->surname, temp->firstname, temp->nb_level);
-        temp = temp->nexts[0];
-        i++;
-    }*/
-
-    /*for (int i = 0; i<list.max_lvl;i++){
-        contact *temp = list.heads[i];
-        printf("level %d\n\n\n\n", i);
-        int j = 0;
-        while (temp != NULL){
-            //printf("%d %s_%s %d niveaux\n",j, temp->surname, temp->firstname, temp->nb_level);
-            temp = temp->nexts[i];
-            j++;
-        }
-        printf("\n\n\n\n\n\n");
-    }*/
-
-
+    
     fclose(file_firstname);
     fclose(file_surname);
     return list;

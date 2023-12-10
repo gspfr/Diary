@@ -1,8 +1,5 @@
-//
-// Created by franc on 03/12/2023.
-//
-
 #include "save.h"
+
 void save_appointment(contact_list contacts){
     FILE *save_file = fopen("save.txt","w");
     contact* tempCont = contacts.heads[0];
