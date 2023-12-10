@@ -271,3 +271,35 @@ void deleteAppointment(contact* cont){
         free(printApp);
     }
 }
+
+
+int optimisedSearchContact(contact_list list, char* surname){
+    contact* temp =  list.heads[3], *prev = NULL;
+    while (temp != NULL) {
+        if (strcmp(temp->surname, surname) == 0) {
+            return 1;
+        } else if (strcmp(temp->surname, surname) > 0) {
+            return searchfromContact(temp, 2, surname);
+        }
+        prev = temp;
+        temp = temp->nexts[3];
+    }
+    return searchfromContact(prev, 2, surname);
+}
+
+int searchfromContact (contact* cont, int level, char* surname){
+    contact *temp = cont, *prev = NULL;
+    while (temp != NULL){
+        if (strcmp(temp->surname, surname) == 0){
+            return 1;
+        }else if (strcmp(temp->surname, surname) > 0){
+            return searchfromContact(prev, level-1, surname);
+        }
+        prev = temp;
+        temp = temp->nexts[level];
+    }
+    if (level != 0){
+        return searchfromContact(prev, level-1, surname);
+    }
+    return 0;
+}

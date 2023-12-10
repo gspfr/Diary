@@ -64,4 +64,8 @@ appointment* createAppointment(contact*);
 int search_contact0(contact_list, char* );
 void auto_completion(contact_list list);
 void deleteAppointment(contact*);
+
+int optimisedSearchContact(contact_list, char*);
+int searchfromContact(contact*, int, char*);
+
 #endif //DIARY_MAIN__1__APPOINTMENT_H

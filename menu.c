@@ -4,7 +4,7 @@ void menu(){
     int choice = 0;
 
 
-    contact_list list = createEmptyContactList(4);
+    contact_list list = createContactList();
     appointment appointment1;
     char *s = "ouais";
     appointment1.purpose = s;
@@ -28,10 +28,16 @@ void menu(){
                 printf("Enter the surname:\n");
                 char* string = scanString();
                 printf("\n");
-                if (search_contact0(list, string)==1)
-                    printf("This person exists in your list");
-                else
-                    printf("This person doesn't exist in your list");
+                if (search_contact0(list, string)==1) {
+                    printf("This person exists in your list\n");
+                }else {
+                    printf("This person doesn't exist in your list\n");
+                }
+                if (optimisedSearchContact(list, string) == 1){
+                    printf("This person exists in your list\n");
+                }else {
+                    printf("This person doesn't exist in your list\n");
+                }
                 break;
             }
             case 2:{
