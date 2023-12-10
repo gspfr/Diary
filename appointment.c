@@ -188,12 +188,16 @@ contact *createContact(char *firstname, char *surname){
 
     cont->surname = (char*)malloc(strlen(surname)+1);
     strcpy(cont->surname, toLowerString(surname));
+    cont->appointments = (appointment**) malloc(10* sizeof(appointment*));
+    for(int i=0;i<10;i++){
+        cont->appointments[i] = NULL;
+    }
     return cont;
 }
 
 void display_appointment(appointment appointment1){
-    printf("Date: %d/%d/%d\n", appointment1.date.day, appointment1.date.month, appointment1.date.year);
-    printf("At : %dh%d during %dh%d\n", appointment1.time.hour,appointment1.time.minute, appointment1.length.hour,appointment1.length.minute);
+    printf("Date: %d / %d / %d\n", appointment1.date.day, appointment1.date.month, appointment1.date.year);
+    printf("At : %dh%d during %d hour and %d minutes\n", appointment1.time.hour,appointment1.time.minute, appointment1.length.hour,appointment1.length.minute);
     printf("Purpose: %s\n", appointment1.purpose);
 }
 
@@ -208,3 +212,62 @@ int search_contact0(contact_list contactList, char* name){
     return 0;
 }
 
+void auto_completion(contact_list list) {
+    char search[4];
+    printf("Enter first 3 letters : ");
+    scanf("%3s", search);
+    printf("Corresponding names :\n");
+    for (int i = 0; i < 21898; i++) {
+        char *temp =  list.heads[i]->surname;
+        if (strncmp(temp, search, 3) == 0) {
+            printf("%s\n", temp);
+        }
+    }
+}
+
+appointment* createAppointment(contact* Contact){
+    appointment* newAppointement = (appointment*) malloc(sizeof (appointment));
+    char* s = (char *) malloc(100*sizeof(char ));
+    printf("Enter the date of the appointment in day/month/year format:\n");
+    scanf("%d/%d/%d", &newAppointement->date.day, &newAppointement->date.month, &newAppointement->date.year);
+    getchar();
+    printf("Enter the time of the appointment in hour:minutes format:\n");
+    scanf("%d:%d", &newAppointement->time.hour, &newAppointement->time.minute);
+    printf("%d %d", newAppointement->time.hour, newAppointement->time.minute);
+    getchar();
+    printf("Enter the length of the appointment in hour:minutes format:\n");
+    scanf("%d:%d", &newAppointement->length.hour, &newAppointement->length.minute);
+    printf("%d %d", newAppointement->length.hour, newAppointement->length.minute);
+    getchar();
+    printf("Enter the purpose of the appointment:\n");
+    scanf("%s", s);
+    getchar();
+    newAppointement->purpose = s;
+    newAppointement->next = NULL;
+    return newAppointement;
+}
+
+void deleteAppointment(contact* cont){
+    appointment* printApp;
+    printApp = cont->appointments[0];
+    int i = 1;
+    while (printApp!=NULL){
+        printf("Appointment number %d:\n", i);
+        display_appointment(*printApp);
+        printf("\n");
+        printApp = printApp->next;
+        i++;
+    }
+    printf("Which appointment do you want to delete ? Select a number :");
+    int del;
+    scanf("%d", &del);
+    printApp = cont->appointments[i-1];
+    if(del==1){
+        cont->appointments[0] = cont->appointments[0]->next;
+    }
+    else{
+        cont->appointments[i-2]->next = cont->appointments[i-1]->next;
+        free(printApp->purpose);
+        free(printApp);
+    }
+}
