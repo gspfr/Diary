@@ -55,6 +55,25 @@ contact_list createContactList(){
     i = 0;
     contact *temp = list.heads[0];
 
+    /*while (temp != NULL){
+        printf("%d %s_%s %d niveaux\n",i, temp->surname, temp->firstname, temp->nb_level);
+        temp = temp->nexts[0];
+        i++;
+    }*/
+
+    /*for (int i = 0; i<list.max_lvl;i++){
+        contact *temp = list.heads[i];
+        printf("level %d\n\n\n\n", i);
+        int j = 0;
+        while (temp != NULL){
+            //printf("%d %s_%s %d niveaux\n",j, temp->surname, temp->firstname, temp->nb_level);
+            temp = temp->nexts[i];
+            j++;
+        }
+        printf("\n\n\n\n\n\n");
+    }*/
+
+
     fclose(file_firstname);
     fclose(file_surname);
     return list;
@@ -182,6 +201,11 @@ char* toLowerString(char *str){
 
 contact *createContact(char *firstname, char *surname){
     contact *cont = (contact*)malloc(sizeof(contact));
+    /*cont->nexts = (contact**)malloc(4*sizeof(contact*));
+
+    for (int j = 0; j<4; j++){
+        cont->nexts[j] = NULL;
+    }*/
     cont->nexts = (contact**)malloc(sizeof(contact*));
     cont->firstname = (char*)malloc(strlen(firstname)+1);        //one char is one byte so no need to *sizof(char)
     strcpy(cont->firstname, toLowerString(firstname));
@@ -231,14 +255,47 @@ appointment* createAppointment(contact* Contact){
     printf("Enter the date of the appointment in day/month/year format:\n");
     scanf("%d/%d/%d", &newAppointement->date.day, &newAppointement->date.month, &newAppointement->date.year);
     getchar();
+    while(newAppointement->date.day<1 || newAppointement->date.day>31){
+        printf("Please enter a valid value for the day !\n");
+        scanf("%d", &newAppointement->date.day);
+        getchar();
+    }
+    while(newAppointement->date.month<1 || newAppointement->date.month>12){
+        printf("Please enter a valid value for the month !\n");
+        scanf("%d", &newAppointement->date.month);
+        getchar();
+    }
+    while(newAppointement->date.year<2023){
+        printf("Please enter a valid value for the year !\n");
+        scanf("%d", &newAppointement->date.year);
+        getchar();
+    }
     printf("Enter the time of the appointment in hour:minutes format:\n");
     scanf("%d:%d", &newAppointement->time.hour, &newAppointement->time.minute);
-    printf("%d %d", newAppointement->time.hour, newAppointement->time.minute);
     getchar();
+    while (newAppointement->time.hour<0 || newAppointement->time.hour>24){
+        printf("Please enter a valid value for the hour !\n");
+        scanf("%d", &newAppointement->time.hour);
+        getchar();
+    }
+    while (newAppointement->time.minute<0 || newAppointement->time.minute>60){
+        printf("Please enter a valid value for the hour !\n");
+        scanf("%d", &newAppointement->time.minute);
+        getchar();
+    }
     printf("Enter the length of the appointment in hour:minutes format:\n");
     scanf("%d:%d", &newAppointement->length.hour, &newAppointement->length.minute);
-    printf("%d %d", newAppointement->length.hour, newAppointement->length.minute);
     getchar();
+    while (newAppointement->length.hour<0 || newAppointement->length.hour>24){
+        printf("Please enter a valid value for the hour !\n");
+        scanf("%d", &newAppointement->length.hour);
+        getchar();
+    }
+    while (newAppointement->length.minute<0 || newAppointement->length.minute>60){
+        printf("Please enter a valid value for the hour !\n");
+        scanf("%d", &newAppointement->length.minute);
+        getchar();
+    }
     printf("Enter the purpose of the appointment:\n");
     scanf("%s", s);
     getchar();
