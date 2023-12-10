@@ -28,7 +28,7 @@ typedef struct {
     starting_time time;
     length length;
     char* purpose;
-    struct appointment ** next;
+    struct Appointment * next;
 }typedef appointment;
 
 typedef struct Contact{
@@ -60,9 +60,8 @@ char* toLowerString(char *);
 contact *createContact(char *, char *);
 
 void display_appointment(appointment);
-
+appointment* createAppointment(contact*);
 int search_contact0(contact_list, char* );
-
 void auto_completion(contact_list list);
-
+void deleteAppointment(contact*);
 #endif //DIARY_MAIN__1__APPOINTMENT_H
