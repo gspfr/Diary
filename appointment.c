@@ -253,3 +253,16 @@ int search_contact0(contact_list contactList, char* name){
     return 0;
 }
 
+void auto_completion(contact_list list) {
+    char search[4];
+    printf("Enter first 3 letters : ");
+    scanf("%3s", search);
+    printf("Corresponding names :\n");
+    for (int i = 0; i < 21898; i++) {
+        char *temp =  list.heads[i]->surname;
+        if (strncmp(temp, search, 3) == 0) {
+            printf("%s\n", temp);
+        }
+    }
+}
+

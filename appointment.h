@@ -63,4 +63,6 @@ void display_appointment(appointment);
 
 int search_contact0(contact_list, char* );
 
+void auto_completion(contact_list list);
+
 #endif //DIARY_MAIN__1__APPOINTMENT_H
