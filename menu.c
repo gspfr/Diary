@@ -5,21 +5,11 @@ void menu(){
 
 
     contact_list list = createContactList();
-    appointment appointment1;
-    char *s = "ouais";
-    appointment1.purpose = s;
-    appointment1.length.hour = 1;
-    appointment1.length.minute = 30;
-    appointment1.time.hour = 10;
-    appointment1.time.minute = 0;
-    appointment1.date.day = 6;
-    appointment1.date.month = 12;
-    appointment1.date.year = 2023;
 
     while(choice!=9){
         printf("\n\nWhat do you want to do ?\n");
-        printf("1.Search a contact\n2.Create an appointment\n3.Create a contact\n4.Display appointments with a contact\n5.Delete an appointment\n");
-        printf("6.Save all the appointments\n7.Load a file with the appointments\n8.Display time to insert\n9.Exit\n");
+        printf("1.Search a contact at level 0\n2.Create an appointment\n3.Create a contact\n4.Display appointments with a contact\n5.Delete an appointment\n");
+        printf("6.Save all the appointments\n7.Search a contact with multi-level search\n8.Exit\n");
         scanf("%d", &choice);
         getchar();
         printf("\n");
@@ -29,11 +19,6 @@ void menu(){
                 char* string = scanString();
                 printf("\n");
                 if (search_contact0(list, string)==1) {
-                    printf("This person exists in your list\n");
-                }else {
-                    printf("This person doesn't exist in your list\n");
-                }
-                if (optimisedSearchContact(list, string) == 1){
                     printf("This person exists in your list\n");
                 }else {
                     printf("This person doesn't exist in your list\n");
@@ -136,18 +121,21 @@ void menu(){
                 break;
             }
             case 6:{
-                printf("ouais6\n");
+                save_appointment(list);
                 break;
             }
             case 7:{
-                printf("ouais7\n");
+                printf("Enter the surname:\n");
+                char* string = scanString();
+                printf("\n");
+                if (optimisedSearchContact(list, string) == 1){
+                    printf("This person exists in your list\n");
+                }else {
+                    printf("This person doesn't exist in your list\n");
+                }
                 break;
             }
             case 8:{
-                printf("ouais8\n");
-                break;
-            }
-            case 9:{
                 break;
             }
             default:{
