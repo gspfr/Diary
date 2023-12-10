@@ -55,6 +55,25 @@ contact_list createContactList(){
     i = 0;
     contact *temp = list.heads[0];
 
+    /*while (temp != NULL){
+        printf("%d %s_%s %d niveaux\n",i, temp->surname, temp->firstname, temp->nb_level);
+        temp = temp->nexts[0];
+        i++;
+    }*/
+
+    /*for (int i = 0; i<list.max_lvl;i++){
+        contact *temp = list.heads[i];
+        printf("level %d\n\n\n\n", i);
+        int j = 0;
+        while (temp != NULL){
+            //printf("%d %s_%s %d niveaux\n",j, temp->surname, temp->firstname, temp->nb_level);
+            temp = temp->nexts[i];
+            j++;
+        }
+        printf("\n\n\n\n\n\n");
+    }*/
+
+
     fclose(file_firstname);
     fclose(file_surname);
     return list;
@@ -87,23 +106,20 @@ void insertContact(contact_list *list, contact *newContact){
         }
 
 
-        if (previous == NULL) {             // Inserting at the beginning of a list
+        if (previous == NULL) {             // Inserting at the beginning of the list
             newContact->nexts[0] = list->heads[0];
             list->heads[0] = newContact;
             newContact->nb_level = 4;
             newContact->nexts = (contact**)realloc(newContact->nexts, newContact->nb_level*sizeof(contact*));
             for (int j = 0; j<4; j++){
-                newContact->nexts[j] = current;
-                list->heads[j] = newContact;
-            }
-            if (newContact->nexts[0] != NULL && newContact->nb_level == newContact->nexts[0]->nb_level){
-                contact *temp = newContact->nexts[0];
-                newContact->nexts[0] = newContact->nexts[0]->nexts[0];
-                insertContact(list, temp);
+                newContact->nexts[j] = NULL;
             }
         } else {                            // Inserting in or at the end of the list
+            previous->nexts[0] = newContact;
+            newContact->nexts[0] = current;
+
             int level;
-            for (level = 0; level < 4; level++) {
+            for (level = 0; level < 3; level++) {
                 if (newContact->surname[level] != previous->surname[level]) {
                     break;
                 }
@@ -115,8 +131,8 @@ void insertContact(contact_list *list, contact *newContact){
                 newContact->nexts[j] = NULL;
             }
 
-            if (newContact->nb_level > 0){      // Inserting at each level
-                for (int i = 0; i < newContact->nb_level; i++) {
+            if (newContact->nb_level > 1){
+                for (int i = 1; i < newContact->nb_level; i++) {
                     contact *temp = list->heads[i];
                     contact *prev = NULL;
 
@@ -125,30 +141,54 @@ void insertContact(contact_list *list, contact *newContact){
                         temp = temp->nexts[i];
                     }
 
-                    if (prev == NULL && strcmp(newContact->surname, temp->surname) != 0) {
+                    if (prev == NULL) {
                         newContact->nexts[i] = list->heads[i];
                         list->heads[i] = newContact;
-                    } else if (temp != NULL && strcmp(newContact->surname, temp->surname) != 0){
+                    } else {
                         prev->nexts[i] = newContact;
                         newContact->nexts[i] = temp;
-                    }else{
-                        prev->nexts[i] = newContact;
-                        newContact->nexts[i] = NULL;
-                    }
-                }
-
-                for(int i = 0; i <newContact->nb_level; i++){
-                    if (newContact->nexts[i] != NULL && newContact->nb_level == newContact->nexts[i]->nb_level){
-                        if (strcmp(newContact->surname, newContact->nexts[i]->surname) != 0){
-                            contact *temp = newContact->nexts[i];
-                            newContact->nexts[i] = newContact->nexts[i]->nexts[i];
-                            newContact->nexts[newContact->nb_level-1] = newContact->nexts[newContact->nb_level-1]->nexts[newContact->nb_level-1];
-                            insertContact(list, temp);
-                        }
                     }
                 }
             }
+
+
+
+
+
+            /*if (strcmp(&previous->surname[0], &newContact->surname[0]) == 0){       // The first letter is the same
+
+                if (strcmp(&previous->surname[1], &newContact->surname[1]) == 0){      // The second letter is the same
+
+                    if (strcmp(&previous->surname[2], &newContact->surname[2]) == 0) {      // The third letter is the same
+                        newContact->nb_level = 1;
+                        newContact->nexts = (contact**)malloc(newContact->nb_level*sizeof(contact*));
+                        for (int j = 0; j<newContact->nb_level; j++){
+                            newContact->nexts[j] = NULL;
+                        }
+                    }else{      // The third letter is different
+                        newContact->nb_level = 2;
+                        newContact->nexts = (contact**)malloc(newContact->nb_level*sizeof(contact*));
+                        for (int j = 0; j<newContact->nb_level; j++){
+                            newContact->nexts[j] = NULL;
+                        }
+                    }
+
+                    }else{      // The second letter is different
+                    newContact->nb_level = 3;
+                    newContact->nexts = (contact**)malloc(newContact->nb_level*sizeof(contact*));
+                    for (int j = 0; j<newContact->nb_level; j++){
+                        newContact->nexts[j] = NULL;
+                    }
+                }
+            }else{          // The first letter is different
+                newContact->nb_level = 4;
+                newContact->nexts = (contact**)malloc(newContact->nb_level*sizeof(contact*));
+                for (int j = 0; j<newContact->nb_level; j++){
+                    newContact->nexts[j] = NULL;
+                }
+            }*/
         }
+
     }
 }
 
@@ -182,6 +222,11 @@ char* toLowerString(char *str){
 
 contact *createContact(char *firstname, char *surname){
     contact *cont = (contact*)malloc(sizeof(contact));
+    /*cont->nexts = (contact**)malloc(4*sizeof(contact*));
+
+    for (int j = 0; j<4; j++){
+        cont->nexts[j] = NULL;
+    }*/
     cont->nexts = (contact**)malloc(sizeof(contact*));
     cont->firstname = (char*)malloc(strlen(firstname)+1);        //one char is one byte so no need to *sizof(char)
     strcpy(cont->firstname, toLowerString(firstname));
@@ -231,14 +276,47 @@ appointment* createAppointment(contact* Contact){
     printf("Enter the date of the appointment in day/month/year format:\n");
     scanf("%d/%d/%d", &newAppointement->date.day, &newAppointement->date.month, &newAppointement->date.year);
     getchar();
+    while(newAppointement->date.day<1 || newAppointement->date.day>31){
+        printf("Please enter a valid value for the day !\n");
+        scanf("%d", &newAppointement->date.day);
+        getchar();
+    }
+    while(newAppointement->date.month<1 || newAppointement->date.month>12){
+        printf("Please enter a valid value for the month !\n");
+        scanf("%d", &newAppointement->date.month);
+        getchar();
+    }
+    while(newAppointement->date.year<2023){
+        printf("Please enter a valid value for the year !\n");
+        scanf("%d", &newAppointement->date.year);
+        getchar();
+    }
     printf("Enter the time of the appointment in hour:minutes format:\n");
     scanf("%d:%d", &newAppointement->time.hour, &newAppointement->time.minute);
-    printf("%d %d", newAppointement->time.hour, newAppointement->time.minute);
     getchar();
+    while (newAppointement->time.hour<0 || newAppointement->time.hour>24){
+        printf("Please enter a valid value for the hour !\n");
+        scanf("%d", &newAppointement->time.hour);
+        getchar();
+    }
+    while (newAppointement->time.minute<0 || newAppointement->time.minute>60){
+        printf("Please enter a valid value for the hour !\n");
+        scanf("%d", &newAppointement->time.minute);
+        getchar();
+    }
     printf("Enter the length of the appointment in hour:minutes format:\n");
     scanf("%d:%d", &newAppointement->length.hour, &newAppointement->length.minute);
-    printf("%d %d", newAppointement->length.hour, newAppointement->length.minute);
     getchar();
+    while (newAppointement->length.hour<0 || newAppointement->length.hour>24){
+        printf("Please enter a valid value for the hour !\n");
+        scanf("%d", &newAppointement->length.hour);
+        getchar();
+    }
+    while (newAppointement->length.minute<0 || newAppointement->length.minute>60){
+        printf("Please enter a valid value for the hour !\n");
+        scanf("%d", &newAppointement->length.minute);
+        getchar();
+    }
     printf("Enter the purpose of the appointment:\n");
     scanf("%s", s);
     getchar();
