@@ -55,27 +55,6 @@ contact_list createContactList(){
     i = 0;
     contact *temp = list.heads[0];
 
-    /*while (temp != NULL){
-        printf("%d %s_%s %d niveaux\n",i, temp->surname, temp->firstname, temp->nb_level);
-        temp = temp->nexts[0];
-        i++;
-    }*/
-
-    //printf("%s\n", list.heads[0]->firstname);
-
-    /*for (int i = 0; i<list.max_lvl;i++){
-        contact *temp = list.heads[i];
-        printf("level %d\n\n\n\n", i);
-        int j = 0;
-        while (temp != NULL){
-            //printf("%d %s_%s %d niveaux\n",j, temp->surname, temp->firstname, temp->nb_level);
-            temp = temp->nexts[i];
-            j++;
-        }
-        printf("\n\n\n\n\n\n");
-    }*/
-
-
     fclose(file_firstname);
     fclose(file_surname);
     return list;
@@ -108,20 +87,23 @@ void insertContact(contact_list *list, contact *newContact){
         }
 
 
-        if (previous == NULL) {             // Inserting at the beginning of the list
+        if (previous == NULL) {             // Inserting at the beginning of a list
             newContact->nexts[0] = list->heads[0];
             list->heads[0] = newContact;
             newContact->nb_level = 4;
             newContact->nexts = (contact**)realloc(newContact->nexts, newContact->nb_level*sizeof(contact*));
             for (int j = 0; j<4; j++){
-                newContact->nexts[j] = NULL;
+                newContact->nexts[j] = current;
+                list->heads[j] = newContact;
+            }
+            if (newContact->nexts[0] != NULL && newContact->nb_level == newContact->nexts[0]->nb_level){
+                contact *temp = newContact->nexts[0];
+                newContact->nexts[0] = newContact->nexts[0]->nexts[0];
+                insertContact(list, temp);
             }
         } else {                            // Inserting in or at the end of the list
-            previous->nexts[0] = newContact;
-            newContact->nexts[0] = current;
-
             int level;
-            for (level = 0; level < 3; level++) {
+            for (level = 0; level < 4; level++) {
                 if (newContact->surname[level] != previous->surname[level]) {
                     break;
                 }
@@ -133,8 +115,8 @@ void insertContact(contact_list *list, contact *newContact){
                 newContact->nexts[j] = NULL;
             }
 
-            if (newContact->nb_level > 1){
-                for (int i = 1; i < newContact->nb_level; i++) {
+            if (newContact->nb_level > 0){      // Inserting at each level
+                for (int i = 0; i < newContact->nb_level; i++) {
                     contact *temp = list->heads[i];
                     contact *prev = NULL;
 
@@ -143,54 +125,30 @@ void insertContact(contact_list *list, contact *newContact){
                         temp = temp->nexts[i];
                     }
 
-                    if (prev == NULL) {
+                    if (prev == NULL && strcmp(newContact->surname, temp->surname) != 0) {
                         newContact->nexts[i] = list->heads[i];
                         list->heads[i] = newContact;
-                    } else {
+                    } else if (temp != NULL && strcmp(newContact->surname, temp->surname) != 0){
                         prev->nexts[i] = newContact;
                         newContact->nexts[i] = temp;
+                    }else{
+                        prev->nexts[i] = newContact;
+                        newContact->nexts[i] = NULL;
+                    }
+                }
+
+                for(int i = 0; i <newContact->nb_level; i++){
+                    if (newContact->nexts[i] != NULL && newContact->nb_level == newContact->nexts[i]->nb_level){
+                        if (strcmp(newContact->surname, newContact->nexts[i]->surname) != 0){
+                            contact *temp = newContact->nexts[i];
+                            newContact->nexts[i] = newContact->nexts[i]->nexts[i];
+                            newContact->nexts[newContact->nb_level-1] = newContact->nexts[newContact->nb_level-1]->nexts[newContact->nb_level-1];
+                            insertContact(list, temp);
+                        }
                     }
                 }
             }
-
-
-
-
-
-            /*if (strcmp(&previous->surname[0], &newContact->surname[0]) == 0){       // The first letter is the same
-
-                if (strcmp(&previous->surname[1], &newContact->surname[1]) == 0){      // The second letter is the same
-
-                    if (strcmp(&previous->surname[2], &newContact->surname[2]) == 0) {      // The third letter is the same
-                        newContact->nb_level = 1;
-                        newContact->nexts = (contact**)malloc(newContact->nb_level*sizeof(contact*));
-                        for (int j = 0; j<newContact->nb_level; j++){
-                            newContact->nexts[j] = NULL;
-                        }
-                    }else{      // The third letter is different
-                        newContact->nb_level = 2;
-                        newContact->nexts = (contact**)malloc(newContact->nb_level*sizeof(contact*));
-                        for (int j = 0; j<newContact->nb_level; j++){
-                            newContact->nexts[j] = NULL;
-                        }
-                    }
-
-                    }else{      // The second letter is different
-                    newContact->nb_level = 3;
-                    newContact->nexts = (contact**)malloc(newContact->nb_level*sizeof(contact*));
-                    for (int j = 0; j<newContact->nb_level; j++){
-                        newContact->nexts[j] = NULL;
-                    }
-                }
-            }else{          // The first letter is different
-                newContact->nb_level = 4;
-                newContact->nexts = (contact**)malloc(newContact->nb_level*sizeof(contact*));
-                for (int j = 0; j<newContact->nb_level; j++){
-                    newContact->nexts[j] = NULL;
-                }
-            }*/
         }
-
     }
 }
 
@@ -224,11 +182,6 @@ char* toLowerString(char *str){
 
 contact *createContact(char *firstname, char *surname){
     contact *cont = (contact*)malloc(sizeof(contact));
-    /*cont->nexts = (contact**)malloc(4*sizeof(contact*));
-
-    for (int j = 0; j<4; j++){
-        cont->nexts[j] = NULL;
-    }*/
     cont->nexts = (contact**)malloc(sizeof(contact*));
     cont->firstname = (char*)malloc(strlen(firstname)+1);        //one char is one byte so no need to *sizof(char)
     strcpy(cont->firstname, toLowerString(firstname));

@@ -3,8 +3,8 @@
 void menu(){
     int choice = 0;
 
-    //contact_list list = createContactList();
-    contact_list list = createEmptyContactList(4);
+    contact_list list = createContactList();
+    //contact_list list = createEmptyContactList(4);
     appointment appointment1;
     char *s = "ouais";
     appointment1.purpose = s;
@@ -48,14 +48,14 @@ void menu(){
             case 4:{
                 for (int i = 0; i<list.max_lvl;i++){
                     contact *temp = list.heads[i];
-                    printf("level %d\n\n", i);
+                    printf("level %d\n", i);
                     int j = 0;
                     while (temp != NULL){
                         printf("%d %s_%s %d niveaux\n",j, temp->surname, temp->firstname, temp->nb_level);
                         temp = temp->nexts[i];
                         j++;
                     }
-                    printf("\n\n\n");
+                    printf("\n");
                 }
                 printf("ouais4\n");
                 break;
